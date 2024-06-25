@@ -8,18 +8,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 	}
 
 	if (request.action === "responder_formulario") {
-		var selectedForm = request.form;
+		var selectedForm = document.getElementById("selectedForm");
 		var inputs = [];
 
-		selectedForm.forEach((form) => {
-			let formInputs = form.querySelectorAll("input");
-			formInputs.forEach((input) => {
-				if (input.type === "text") {
-					input.value = "Weena!";
-					inputs.push(input);
-				}
-			});
+		let formInputs = selectedForm.querySelectorAll("input");
+		formInputs.forEach((input) => {
+			if (input.type === "text") {
+				input.value = "Weena!";
+				inputs.push(input);
+			}
 		});
+
+		// Remove the id attribute from the selectedForm element
+		selectedForm.removeAttribute("id");
 	}
 });
 
@@ -43,6 +44,7 @@ function selectForm() {
 	resetForms();
 	this.id = "selectedForm";
 	this.style.border = "1px solid green";
+	chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
 }
 
 function resetForms() {
