@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "Nombre de tu extensión",
+    "version": "1.0",
+    "description": "Descripción de tu extensión",
+    "permissions": [
+      "activeTab"
+    ],
+    "browser_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+      }
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
