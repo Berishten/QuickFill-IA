@@ -6,11 +6,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify([
-				"Qué es un arreglo?",
-				"Cómo defines angular?",
-				"Cuáles son las principales diferencias con React?",
-			]),
+			body: JSON.stringify(message.data),
 		})
 			.then((response) => response.json())
 			.then((data) => {

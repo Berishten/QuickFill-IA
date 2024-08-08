@@ -81,8 +81,9 @@ function selectForm() {
 	originalFormId = this.id;
 	this.id = SELECTED_FORM_ID;
 	inputs = getInputs(this.id);
+	const prompts = inputs.map((input) => input.prompt);
 	this.style.border = "1px solid green";
-	chrome.runtime.sendMessage({ action: "makeHttpRequest" });
+	chrome.runtime.sendMessage({ action: "makeHttpRequest", data: prompts });
 	// chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
 }
 
