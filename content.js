@@ -1,4 +1,7 @@
 let forms = [];
+let inputs = [];
+let originalFormId = "";
+const SELECTED_FORM_ID = "selectedForm";
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	if (message.action === "seleccionar_formulario") {
@@ -8,23 +11,56 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	}
 
 	if (message.action === "responder_formulario" && message.data) {
-		const selectedForm = document.getElementById("selectedForm");
-
-		if (selectedForm) {
-			const inputs = selectedForm.querySelectorAll("input[type='text']");
-
-			inputs.forEach((input, i) => {
-				input.value = message.data[i];
+		if (inputs && inputs.length > 0) {
+			inputs.forEach((element, i) => {
+				element.input.value = message.data[i];
 			});
 
-			// Remove the id attribute from the selectedForm element
-			selectedForm.removeAttribute("id");
+			let formulario = document.getElementById(SELECTED_FORM_ID);
+			formulario.id = originalFormId;
+
 			sendResponse("Inputs updated with response.");
 		} else {
-			sendResponse("No form selected.");
+			sendResponse("No inputs found.");
 		}
 	}
 });
+
+function getInputs(formId) {
+	// console.log(event);
+	// const form = event.target("form");
+	const form = document.getElementById(formId);
+
+	if (!form) {
+		console.error("No form found.");
+		return;
+	}
+
+	// Obtiene todos los elementos de entrada (excepto los botones) dentro del formulario
+	const inputs = form.querySelectorAll(
+		"input:not([type='button']):not([type='submit']):not([type='reset']), textarea"
+	);
+
+	// Crea el arreglo con objetos compuestos por label y input
+	const formElements = Array.from(inputs).map((input) => {
+		// Busca el label asociado al input mediante el atributo 'for'
+		let label = form.querySelector(`label[for="${input.id}"]`);
+
+		// Si no hay label asociado mediante 'for', busca el label dentro del mismo contenedor
+		if (!label) {
+			label = Array.from(form.querySelectorAll("label")).find((l) =>
+				l.contains(input)
+			);
+		}
+
+		return {
+			input: input, // El elemento de entrada
+			prompt: label ? label.textContent : "", // Usa el texto del label si existe
+		};
+	});
+
+	return formElements;
+}
 
 function setFormHovers() {
 	forms.forEach((form) => {
@@ -44,7 +80,9 @@ function handleMouseOut() {
 
 function selectForm() {
 	resetForms();
-	this.id = "selectedForm";
+	originalFormId = this.id;
+	this.id = SELECTED_FORM_ID;
+	inputs = getInputs(this.id);
 	this.style.border = "1px solid green";
 	chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
 }
