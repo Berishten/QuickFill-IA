@@ -1,26 +1,28 @@
 let forms = [];
 
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-	if (request.action === "seleccionar_formulario") {
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+	if (message.action === "seleccionar_formulario") {
 		forms = document.querySelectorAll("form");
 		setFormHovers(forms);
 		sendResponse(true);
 	}
 
-	if (request.action === "responder_formulario") {
-		var selectedForm = document.getElementById("selectedForm");
-		var inputs = [];
+	if (message.action === "responder_formulario" && message.data) {
+		const selectedForm = document.getElementById("selectedForm");
 
-		let formInputs = selectedForm.querySelectorAll("input");
-		formInputs.forEach((input) => {
-			if (input.type === "text") {
-				input.value = "Weena!";
-				inputs.push(input);
-			}
-		});
+		if (selectedForm) {
+			const inputs = selectedForm.querySelectorAll("input[type='text']");
 
-		// Remove the id attribute from the selectedForm element
-		selectedForm.removeAttribute("id");
+			inputs.forEach((input, i) => {
+				input.value = message.data[i];
+			});
+
+			// Remove the id attribute from the selectedForm element
+			selectedForm.removeAttribute("id");
+			sendResponse("Inputs updated with response.");
+		} else {
+			sendResponse("No form selected.");
+		}
 	}
 });
 
