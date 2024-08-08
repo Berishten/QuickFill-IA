@@ -12,11 +12,18 @@
 	<body>
     <ol style="padding-left: 10px">
       <li>
-        <label for="archivoPDF">Adjunte CV (PDF):</label>
-        <input type="file" id="archivoPDF" accept=".pdf" />
+        <label>Debe ingresar primero</label>
+        <br>
+        <button id="login" disabled>Login</button>
       </li>
       <li>
-        <button id="responderFormulario">Responder formulario</button>
+        <label for="archivoPDF">Adjunte CV (PDF):</label>
+        <input type="file" id="archivoPDF" accept=".pdf" disabled />
+      </li>
+      <li>
+        <label>Seleccione el formulario para rellenar</label>
+        <br>
+        <button id="responderFormulario">Seleccionar formulario</button>
       </li>
     </ol>
     <script src="popup.js"></script>

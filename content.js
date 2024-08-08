@@ -27,8 +27,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 });
 
 function getInputs(formId) {
-	// console.log(event);
-	// const form = event.target("form");
 	const form = document.getElementById(formId);
 
 	if (!form) {
@@ -54,8 +52,8 @@ function getInputs(formId) {
 		}
 
 		return {
-			input: input, // El elemento de entrada
-			prompt: label ? label.textContent : "", // Usa el texto del label si existe
+			input: input,
+			prompt: label ? label.textContent : "",
 		};
 	});
 
@@ -84,7 +82,8 @@ function selectForm() {
 	this.id = SELECTED_FORM_ID;
 	inputs = getInputs(this.id);
 	this.style.border = "1px solid green";
-	chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
+	chrome.runtime.sendMessage({ action: "makeHttpRequest" });
+	// chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
 }
 
 function resetForms() {

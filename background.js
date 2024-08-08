@@ -1,3 +1,4 @@
+let isFormSelected = false;
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "makeHttpRequest") {
 		fetch("http://localhost:3000/responder", {
@@ -39,5 +40,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			.catch((error) => {
 				console.error("Error:", error);
 			});
+	}
+
+	if (message.action === "formulario_seleccionado") {
+		// document
+		// 	.getElementById("seleccionarFormulario")
+		// 	.setAttribute("disabled", "disabled");
+		// isFormSelected = true;
+		// console.log("HOLIS");
+		isFormSelected = true;
 	}
 });
