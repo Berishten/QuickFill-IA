@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const bodyParser = require("body-parser");
 const {
 	GoogleGenerativeAI,
 	FunctionDeclarationSchemaType,
@@ -28,17 +27,17 @@ app.post("/responder", async (req, res) => {
 	});
 
 	let prompt = preguntas(req.body);
-	console.log(prompt+"\n-----------------------------------\n");
-	let result = await model.generateContent(prompt);
-	// let result = "[\"Una estructura de datos que permite almacenar una colección ordenada de elementos.\", \"Un framework de JavaScript para construir aplicaciones web.\", \"Angular es un framework completo que ofrece más estructura y convenciones, mientras que React es una biblioteca de JavaScript más flexible y enfocada en el desarrollo de interfaces de usuario.\"]\n"
+	console.log(prompt + "\n-----------------------------------\n");
+	// let result = await model.generateContent(prompt);
+	let result = ['respuesta 1', 8, 2, 'Bootstrap\nTailwind\nFundation'];
 	// res.json(JSON.parse(result));
-	result = JSON.parse(result.response.text());
-	result = result.map((item) => {
-		if (!isNaN(item)) {
-			return Number(item);
-		}
-		return item;
-	});
+	// result = JSON.parse(result.response.text());
+	// result = result.map((item) => {
+	// 	if (!isNaN(item)) {
+	// 		return Number(item);
+	// 	}
+	// 	return item;
+	// });
 	res.json(result);
 });
 

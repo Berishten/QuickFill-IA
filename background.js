@@ -38,6 +38,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			});
 	}
 
+	// TODO: seccion para menejar datos (no volatil)
 	if (message.action === "formulario_seleccionado") {
 		// document
 		// 	.getElementById("seleccionarFormulario")
