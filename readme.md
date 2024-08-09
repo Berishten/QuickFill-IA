@@ -17,12 +17,23 @@
 - [ ] Rellenar inputs
 - [ ] Estilizar
 
-#### (Formulario)[https://docs.google.com/forms/d/e/1FAIpQLSczzeNmPUo6yiS_TfULziyEO8gzc1WFYX3yal62KzrQgeoa1g/viewform?embedded=true&pli=1]
-- [ ] Documentación
-    - [ ] App name
-    - [ ] App tagline or elevator pitch
-    - [ ] Definir utilidad
-    - [ ] YouTube URL
-    - [ ] Website or web app URL (publicar en chrome extensions)
-    - [ ] Testing instructions
-    - [ ] Team name
+
+### TODO:
+- [ ] Manejar los distintos tipos de inputs
+    - [x] Input
+    - [x] Textarea
+    - [ ] Select
+    - [ ] Radio (a revisar, baja prioridad)
+    - [ ] Checkbox (a revisar, baja prioridad)
+    - [ ] Date (a revisar, baja prioridad)
+
+
+### Documentación
+[Link de Formulario](https://docs.google.com/forms/d/e/1FAIpQLSczzeNmPUo6yiS_TfULziyEO8gzc1WFYX3yal62KzrQgeoa1g/viewform?embedded=true&pli=1)
+- [ ] App name
+- [ ] App tagline or elevator pitch
+- [ ] Definir utilidad
+- [ ] YouTube URL
+- [ ] Website or web app URL (publicar en chrome extensions)
+- [ ] Testing instructions
+- [ ] Team name
