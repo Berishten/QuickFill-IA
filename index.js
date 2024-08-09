@@ -6,15 +6,19 @@ const {
 } = require("@google/generative-ai");
 
 require("dotenv").config();
+const GEMINI_MODEL = "gemini-1.5-flash";
+const ANALYZE_INSTRUCTIONS =
+	"Eres un experto analizando formularios web con que constan de pares ('titulo' - 'tipo_input'). Se te proporcionará un formulario y deberás responder con todos los pares ('titulo' - 'tipo_input') que encuentres en el formulario. Puedes hacerlo ya sea, identificando atributos for y name, o infiriendo por cercanía. El tipo de input puede ser: input_text, input_number, selector, radio, check.";
+const ANSWER_INSTRUCTIONS =
+	"Eres un experto en programación. Responde muy brevemente cada pregunta, si te preguntan cuánto tiempo llevas programando en un formato numérico, responde con un número inventado. Se te proporcionará un archivo json, responderás con el formato dado en la propiedad 'tipo_input' a cada una de las preguntas en la propiedad 'titulo'";
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 app.use(express.json());
 
 app.post("/responder", async (req, res) => {
-	const model = genAI.getGenerativeModel({
-		model: "gemini-1.5-flash",
-		systemInstruction:
-			"Eres un experto en programación, responderás una serie de preguntas en formato de un arreglo. Responde muy brevemente cada pregunta. Si te preguntan cuánto tiempo llevas programando en un formato numérico, responde con un número inventado.",
+	const answerModel = genAI.getGenerativeModel({
+		model: GEMINI_MODEL,
+		systemInstruction: ANSWER_INSTRUCTIONS,
 		generationConfig: {
 			responseMimeType: "application/json",
 			responseSchema: {
@@ -26,27 +30,40 @@ app.post("/responder", async (req, res) => {
 		},
 	});
 
-	let prompt = preguntas(req.body);
-	console.log(prompt + "\n-----------------------------------\n");
-	// let result = await model.generateContent(prompt);
-	let result = ['respuesta 1', 8, 2, 'Bootstrap\nTailwind\nFundation'];
-	// res.json(JSON.parse(result));
-	// result = JSON.parse(result.response.text());
-	// result = result.map((item) => {
-	// 	if (!isNaN(item)) {
-	// 		return Number(item);
-	// 	}
-	// 	return item;
-	// });
-	res.json(result);
+	const formQuestions = await analyzeForm(req.body.form);
+	console.log("QUESTIONS", formQuestions);
+
+	let answers = await answerModel.generateContent(formQuestions);
+	answers = JSON.parse(answers.response.text());
+
+	res.json(answers);
 });
 
-function preguntas(input) {
-	let preguntas = "";
-	for (let i = 0; i < input.length; i++) {
-		preguntas += "- " + input[i] + (i < input.length - 1 ? "\n" : "");
-	}
-	return preguntas;
+async function analyzeForm(form) {
+	let analyzingModel = genAI.getGenerativeModel({
+		model: GEMINI_MODEL,
+		systemInstruction: ANALYZE_INSTRUCTIONS,
+		generationConfig: {
+			responseMimeType: "application/json",
+			responseSchema: {
+				type: FunctionDeclarationSchemaType.ARRAY,
+				items: {
+					type: FunctionDeclarationSchemaType.OBJECT,
+					properties: {
+						titulo: {
+							type: FunctionDeclarationSchemaType.STRING,
+						},
+						tipo_input: {
+							type: FunctionDeclarationSchemaType.STRING,
+						},
+					},
+				},
+			},
+		},
+	});
+
+	const result = await analyzingModel.generateContent(form);
+	return result.response.text();
 }
 
 app.listen(3000, () => {

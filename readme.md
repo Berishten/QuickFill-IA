@@ -21,6 +21,11 @@ Un plugin que utiliza Gemini para rellenar formularios con datos a partir de un 
     - [ ] Checkbox (a revisar, baja prioridad)
     - [ ] Date (a revisar, baja prioridad)
 - [ ] Estilizar
+- [ ] Seguridad
+    - [ ] Sanitizar html enviado al servidor
+    - [ ] Protección de datos del usuario
+    - [ ] Prompt injection
+    - [ ] Model API token
 
 
 ### Documentación
