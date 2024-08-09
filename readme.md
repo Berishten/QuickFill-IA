@@ -23,6 +23,7 @@ Una herramienta que utiliza Gemini para rellenar formularios con datos a partir 
     - [ ] Checkbox (a revisar, baja prioridad)
     - [ ] Date (a revisar, baja prioridad)
 - [ ] Estilizar
+    - [ ] Pantalla loading sobre formulario
 - [ ] Seguridad
     - [ ] Sanitizar html enviado al servidor
     - [ ] Protección de datos del usuario

@@ -12,20 +12,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	}
 
 	if (message.action === "responder_formulario" && message.data) {
-		let formInputs = selectedForm.querySelectorAll(
-			"input:not([type='button']):not([type='submit']):not([type='reset']), select, textarea"
-		);
-		let filteredInputs = Array.from(formInputs).filter(
-			(input) => input.type !== "hidden"
-		);
-
-		filteredInputs.forEach((input, i) => {
+		inputs.forEach((input, i) => {
 			if (input.tagName === "TEXTAREA") {
 				input.value = message.data[i];
 			}
 			switch (input.type) {
 				case "number":
-					input.value = parseInt(message.data[i]);
+					input.value = message.data[i];
 					break;
 				case "text":
 					input.value = message.data[i];
@@ -42,49 +35,13 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 					break;
 				default:
 					console.log("Tipo de input no reconocido:", input.type);
-					console.log("Saltado", i);
-					i--;
 					break;
 			}
 		});
+		triggerChanges();
 		sendResponse("END.");
 	}
 });
-
-function getInputs(formId) {
-	const form = document.getElementById(formId);
-	selectedForm = form;
-
-	if (!form) {
-		console.error("No form found.");
-		return;
-	}
-
-	// Obtiene todos los elementos de entrada (excepto los botones) dentro del formulario
-	const inputs = form.querySelectorAll(
-		"input:not([type='button']):not([type='submit']):not([type='reset']), textarea"
-	);
-
-	// Crea el arreglo con objetos compuestos por label y input
-	const formElements = Array.from(inputs).map((input) => {
-		// Busca el label asociado al input mediante el atributo 'for'
-		let label = form.querySelector(`label[for="${input.id}"]`);
-
-		// Si no hay label asociado mediante 'for', busca el label dentro del mismo contenedor
-		if (!label) {
-			label = Array.from(form.querySelectorAll("label")).find((l) =>
-				l.contains(input)
-			);
-		}
-
-		return {
-			input: input,
-			prompt: label ? label.textContent : "",
-		};
-	});
-
-	return formElements;
-}
 
 function setFormHovers() {
 	forms.forEach((form) => {
@@ -102,6 +59,31 @@ function handleMouseOut() {
 	this.style.border = "none";
 }
 
+function getInputs() {
+	let formInputs = selectedForm.querySelectorAll(
+		"input:not([type='button']):not([type='submit']):not([type='reset']), select, textarea"
+	);
+
+	let filteredInputs = Array.from(formInputs).filter(
+		(input) => input.type !== "hidden"
+	);
+
+	return filteredInputs;
+}
+
+function validateAndConvertToInt(value) {
+	// Intenta convertir el valor a un entero
+	const convertedValue = parseInt(value, 10);
+
+	// Verifica si la conversión fue exitosa y si el valor convertido es un número
+	if (!isNaN(convertedValue)) {
+		return convertedValue;
+	} else {
+		// Retorna null si la conversión no es posible
+		return value;
+	}
+}
+
 function selectForm() {
 	resetForms();
 	originalFormId = this.id;
@@ -109,17 +91,43 @@ function selectForm() {
 	this.style.border = "1px solid green";
 	selectedForm = this;
 
+	inputs = getInputs();
+	touchInputs();
+
 	responderFormulario(this.outerHTML);
 	// TODO: Enviar mensaje al background en caso de almacenar valores
 	// chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
 }
 
-function responderFormulario(form) {
-	// inputs = getInputs(this.id);
-	// const prompts = inputs.map((input) => input.prompt);
+function touchInputs() {
+	inputs.forEach((input) => {
+		// Establece el valor del input como un espacio en blanco
+		input.value = " ";
 
-	// Enviar mensaje al background para hacer la solicitud HTTP
-	// chrome.runtime.sendMessage({ action: "makeHttpRequest", data: prompts });
+		// Dispara el evento de input para simular que el usuario ha escrito
+		const inputEvent = new Event("input", { bubbles: true });
+		input.dispatchEvent(inputEvent);
+		
+		// Simula la pérdida de foco disparando el evento blur
+		const blurEvent = new Event("blur", { bubbles: true });
+		input.dispatchEvent(blurEvent);
+	});
+
+	triggerChanges()
+}
+
+function triggerChanges() {
+	inputs.forEach((input) => {
+		// Dispara los eventos para actualizar el estado del formulario
+        const inputEvent = new Event('input', { bubbles: true });
+        input.dispatchEvent(inputEvent);
+
+        const changeEvent = new Event('change', { bubbles: true });
+        input.dispatchEvent(changeEvent);
+	});
+}
+
+function responderFormulario(form) {
 	chrome.runtime.sendMessage({ action: "makeHttpRequest", data: form });
 }
 
