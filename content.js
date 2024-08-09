@@ -71,19 +71,6 @@ function getInputs() {
 	return filteredInputs;
 }
 
-function validateAndConvertToInt(value) {
-	// Intenta convertir el valor a un entero
-	const convertedValue = parseInt(value, 10);
-
-	// Verifica si la conversión fue exitosa y si el valor convertido es un número
-	if (!isNaN(convertedValue)) {
-		return convertedValue;
-	} else {
-		// Retorna null si la conversión no es posible
-		return value;
-	}
-}
-
 function selectForm() {
 	resetForms();
 	originalFormId = this.id;
