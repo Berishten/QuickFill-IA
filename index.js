@@ -8,9 +8,33 @@ const {
 require("dotenv").config();
 const GEMINI_MODEL = "gemini-1.5-flash";
 const ANALYZE_INSTRUCTIONS =
-	"Eres un experto analizando formularios web con que constan de pares ('titulo' - 'tipo_input'). Se te proporcionará un formulario y deberás responder con todos los pares ('titulo' - 'tipo_input') que encuentres en el formulario. Puedes hacerlo ya sea, identificando atributos for y name, o infiriendo por cercanía. El tipo de input puede ser: input_text, input_number, selector, radio, check. Asegúrate de obtener los valores de los selectores, radios y checks que poseen la propiedad 'value'.";
+`
+You are an expert in analyzing web forms that contain ('title' - 'input_type') pairs.
+You will be provided with a form, and your task is to identify and list all the ('title' - 'input_type') pairs present.
+
+1. Identification:
+   - You can identify titles using attributes such as 'for', 'name', or by inferring them based on proximity to the corresponding input.
+
+2. Input types:
+   - 'input_type' can only have one of the following values based on inference: 'text', 'number', or 'select'.
+
+3. Input type validation:
+   - The input type must match the restrictions indicated by the title or nearby validation elements 
+     (such as error messages or attributes related to type restrictions).
+
+4. Select inputs:
+   - When 'input_type' is 'select', you must store the values of each of its <option> elements in a property called 'values'.
+
+`;
 const ANSWER_INSTRUCTIONS =
-	"Eres un experto en programación. Responde muy brevemente cada pregunta, si te preguntan cuánto tiempo llevas programando en un formato numérico, responde con un número inventado. Se te proporcionará un archivo json, responderás con el formato dado en la propiedad 'tipo_input' a cada una de las preguntas en la propiedad 'titulo'. Asegúrate de responder con el valor correcto para elementos de tipo selector, radio y check, por ejemplo: los selectores tiene la propiedad 'value' que indica el valor seleccionado. En el caso de los select, debes responder con el indice de la respuesta seleccionada. Siempre debes responder todas las preguntas. Siempre responderás en español.";
+`
+You will be provided with a JSON file containing objects with questions in the 'titulo' property. 
+Your task is to respond to each question using the format specified in the 'tipo_input' property.
+- If the 'tipo_input' is 'selector', choose one of the values from the 'values' property in the same object.
+- Ensure that you respond to all questions.
+- Don't be redundant in your responses relative to the question.
+- All responses must be in Spanish.
+`;
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 app.use(express.json());
@@ -60,12 +84,18 @@ async function analyzeForm(form) {
 				items: {
 					type: FunctionDeclarationSchemaType.OBJECT,
 					properties: {
-						titulo: {
+						title: {
 							type: FunctionDeclarationSchemaType.STRING,
 						},
-						tipo_input: {
+						input_type: {
 							type: FunctionDeclarationSchemaType.STRING,
 						},
+						values: {
+							type: FunctionDeclarationSchemaType.ARRAY,
+							items: {
+								type: FunctionDeclarationSchemaType.STRING,
+							},
+						}
 					},
 				},
 			},

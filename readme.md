@@ -1,5 +1,5 @@
-# Magic form filler
-Un plugin que utiliza Gemini para rellenar formularios con datos a partir de un contexto (archivo, texto, etc).
+# QuickFillAI
+Una herramienta que utiliza Gemini para rellenar formularios con datos a partir de un contexto (archivo, texto, etc).
 
 ---
 
@@ -14,10 +14,11 @@ Un plugin que utiliza Gemini para rellenar formularios con datos a partir de un 
 - [ ] Subir archivo
 - [ ] Seleccionar idioma
 - [ ] Escribir condiciones de uso
+- [ ] Cubrir casos de accesibilidad
 - [ ] Casos para heurística de pares
-    - [ ] Input
-    - [ ] Textarea
-    - [ ] Select
+    - [x] Input
+    - [x] Textarea
+    - [x] Select
     - [ ] Radio (a revisar, baja prioridad)
     - [ ] Checkbox (a revisar, baja prioridad)
     - [ ] Date (a revisar, baja prioridad)

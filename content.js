@@ -28,13 +28,11 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 					input.value = parseInt(message.data[i]);
 					break;
 				case "text":
-				case "hidden":
-				case "password":
 					input.value = message.data[i];
 					break;
 				case "radio":
 				case "checkbox":
-					input.checked = true;
+					input.checked = message.data[i];
 					break;
 				case "select-one":
 				case "select-multiple":
