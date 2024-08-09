@@ -1,35 +1,30 @@
-### Proceso de uso
+# Magic form filler
+Un plugin que utiliza Gemini para rellenar formularios con datos a partir de un contexto (archivo, texto, etc).
 
-1. Logearse en la aplicación.
-2. Subir un archivo para usar como base de conocimiento.
-    - Si el usuario ya tiene un archivo cargado, el botón "Seleccionar formulario" se habilitará.
-    - De lo contrario, el botón "Seleccionar formulario" estará deshabilitado.
-3. Presionar el botón "Seleccionar formulario".
-4. Listo! los inputs se van a rellenar en base a su archivo.
+---
+
+### Características principales
+- [ ] Detección de pares (label - input)
+- [ ] Rellenar inputs con LLM
 
 
-### Características
-
+### TODO:
 - [ ] Login
 - [ ] Input de contexto
 - [ ] Subir archivo
 - [ ] Seleccionar idioma
-- [ ] Rellenar inputs
-- [ ] Estilizar
-
-
-### TODO:
-- [ ] Manejar los distintos tipos de inputs
-    - [x] Input
-    - [x] Textarea
+- [ ] Casos para heurística de pares
+    - [ ] Input
+    - [ ] Textarea
     - [ ] Select
     - [ ] Radio (a revisar, baja prioridad)
     - [ ] Checkbox (a revisar, baja prioridad)
     - [ ] Date (a revisar, baja prioridad)
+- [ ] Estilizar
 
 
 ### Documentación
-[Link de Formulario](https://docs.google.com/forms/d/e/1FAIpQLSczzeNmPUo6yiS_TfULziyEO8gzc1WFYX3yal62KzrQgeoa1g/viewform?embedded=true&pli=1)
+[Link al formulario de competencia](https://docs.google.com/forms/d/e/1FAIpQLSczzeNmPUo6yiS_TfULziyEO8gzc1WFYX3yal62KzrQgeoa1g/viewform?embedded=true&pli=1)
 - [ ] App name
 - [ ] App tagline or elevator pitch
 - [ ] Definir utilidad
