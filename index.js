@@ -25,6 +25,8 @@ You will be provided with a form, and your task is to identify and list all the 
 4. Select inputs:
    - When 'input_type' is 'select', you must store the values of each of its <option> elements in a property called 'values'.
 
+5. Restrictions:
+   - You must provide the 'max_length' property for all input types if there is a character limit.
 `;
 const ANSWER_INSTRUCTIONS =
 `
@@ -32,6 +34,9 @@ You will be provided with a JSON file containing objects with questions in the '
 Your task is to respond to each question using the format specified in the 'tipo_input' property.
 - If the 'tipo_input' is 'selector', choose one of the values from the 'values' property in the same object.
 - Ensure that you respond to all questions.
+- You must provide a response for each question.
+- You must provide responses in the same order as the questions.
+- You must provide a response limited to the 'max_length' property if it exists.
 - Don't be redundant in your responses relative to the question.
 - All responses must be in Spanish.
 `;
@@ -56,7 +61,7 @@ app.post("/responder", async (req, res) => {
 
 	// console.log("BODY:", req.body.form);
 	const formQuestions = await analyzeForm(req.body.form);
-	// console.log("QUESTIONS", formQuestions);
+	console.log(formQuestions);
 
 	let answers = await answerModel.generateContent(formQuestions);
 	answers = JSON.parse(answers.response.text());
@@ -95,7 +100,10 @@ async function analyzeForm(form) {
 							items: {
 								type: FunctionDeclarationSchemaType.STRING,
 							},
-						}
+						},
+						max_length: {
+							type: FunctionDeclarationSchemaType.NUMBER,
+						},
 					},
 				},
 			},
