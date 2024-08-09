@@ -13,6 +13,7 @@ Un plugin que utiliza Gemini para rellenar formularios con datos a partir de un 
 - [ ] Input de contexto
 - [ ] Subir archivo
 - [ ] Seleccionar idioma
+- [ ] Escribir condiciones de uso
 - [ ] Casos para heurística de pares
     - [ ] Input
     - [ ] Textarea

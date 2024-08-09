@@ -1,6 +1,7 @@
 let forms = [];
 let inputs = [];
 let originalFormId = "";
+let selectedForm = null;
 const SELECTED_FORM_ID = "selectedForm";
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
@@ -11,23 +12,50 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	}
 
 	if (message.action === "responder_formulario" && message.data) {
-		if (inputs && inputs.length > 0) {
-			inputs.forEach((element, i) => {
-				element.input.value = message.data[i];
-			});
+		let formInputs = selectedForm.querySelectorAll(
+			"input:not([type='button']):not([type='submit']):not([type='reset']), select, textarea"
+		);
+		let filteredInputs = Array.from(formInputs).filter(
+			(input) => input.type !== "hidden"
+		);
 
-			let formulario = document.getElementById(SELECTED_FORM_ID);
-			formulario.id = originalFormId;
-
-			sendResponse("Inputs updated with response.");
-		} else {
-			sendResponse("No inputs found.");
-		}
+		filteredInputs.forEach((input, i) => {
+			if (input.tagName === "TEXTAREA") {
+				input.value = message.data[i];
+			}
+			switch (input.type) {
+				case "number":
+					input.value = parseInt(message.data[i]);
+					break;
+				case "text":
+				case "hidden":
+				case "password":
+					input.value = message.data[i];
+					break;
+				case "radio":
+				case "checkbox":
+					input.checked = true;
+					break;
+				case "select-one":
+				case "select-multiple":
+					if (input.options.length > 0) {
+						input.value = message.data[i];
+					}
+					break;
+				default:
+					console.log("Tipo de input no reconocido:", input.type);
+					console.log("Saltado", i);
+					i--;
+					break;
+			}
+		});
+		sendResponse("END.");
 	}
 });
 
 function getInputs(formId) {
 	const form = document.getElementById(formId);
+	selectedForm = form;
 
 	if (!form) {
 		console.error("No form found.");
@@ -81,8 +109,9 @@ function selectForm() {
 	originalFormId = this.id;
 	this.id = SELECTED_FORM_ID;
 	this.style.border = "1px solid green";
-	
-	responderFormulario(this);
+	selectedForm = this;
+
+	responderFormulario(this.outerHTML);
 	// TODO: Enviar mensaje al background en caso de almacenar valores
 	// chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
 }
@@ -90,7 +119,7 @@ function selectForm() {
 function responderFormulario(form) {
 	// inputs = getInputs(this.id);
 	// const prompts = inputs.map((input) => input.prompt);
-	
+
 	// Enviar mensaje al background para hacer la solicitud HTTP
 	// chrome.runtime.sendMessage({ action: "makeHttpRequest", data: prompts });
 	chrome.runtime.sendMessage({ action: "makeHttpRequest", data: form });
