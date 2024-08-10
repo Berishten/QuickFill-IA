@@ -2,10 +2,12 @@ let forms = [];
 let inputs = [];
 let originalFormId = "";
 let selectedForm = null;
+let context = "";
 const SELECTED_FORM_ID = "selectedForm";
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	if (message.action === "seleccionar_formulario") {
+		context = message.context;
 		forms = document.querySelectorAll("form");
 		setFormHovers(forms);
 		sendResponse(true);
@@ -94,6 +96,7 @@ function selectForm() {
 
 function touchInputs() {
 	inputs.forEach((input) => {
+		// TODO: habilitar la limpieza dinamica del formulario
 		// Establece el valor del input como un espacio en blanco
 		// input.value = " ";
 
@@ -121,7 +124,11 @@ function triggerChanges() {
 }
 
 function responderFormulario(form) {
-	chrome.runtime.sendMessage({ action: "makeHttpRequest", data: form });
+	const data = {
+		context: context,
+		form: form,
+	};
+	chrome.runtime.sendMessage({ action: "makeHttpRequest", data });
 }
 
 function resetForms() {

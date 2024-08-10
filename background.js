@@ -1,4 +1,5 @@
 let isFormSelected = false;
+let context = "";
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "makeHttpRequest") {
 		fetch("http://localhost:3000/responder", {
@@ -6,7 +7,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ form: message.data }),
+			body: JSON.stringify({ ...message.data }),
 		})
 			.then((response) => response.json())
 			.then((data) => {
@@ -46,5 +47,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 		// isFormSelected = true;
 		// console.log("HOLIS");
 		isFormSelected = true;
+	}
+
+	if (message.action === "save_data") {
+		context = message.ctx;
+		// sendResponse(true);
+	}
+
+	if (message.action === "get_data") {
+		sendResponse(context);
 	}
 });

@@ -7,8 +7,7 @@ const {
 
 require("dotenv").config();
 const GEMINI_MODEL = "gemini-1.5-flash";
-const ANALYZE_INSTRUCTIONS =
-`
+const ANALYZE_INSTRUCTIONS = `
 You are an expert in analyzing web forms that contain ('title' - 'input_type') pairs.
 You will be provided with a form, and your task is to identify and list all the ('title' - 'input_type') pairs present.
 
@@ -28,8 +27,7 @@ You will be provided with a form, and your task is to identify and list all the 
 5. Restrictions:
    - You must provide the 'max_length' property for all input types if there is a character limit.
 `;
-const ANSWER_INSTRUCTIONS =
-`
+const ANSWER_INSTRUCTIONS = `
 You will be provided with a JSON file containing objects with questions in the 'titulo' property. 
 Your task is to respond to each question using the format specified in the 'tipo_input' property.
 - If the 'tipo_input' is 'selector', choose one of the values from the 'values' property in the same object.
@@ -44,9 +42,25 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 app.use(express.json());
 
 app.post("/responder", async (req, res) => {
+	const context = req.body.context;
+
+	// console.log("BODY:", req.body.form);
+	const formQuestions = await analyzeForm(req.body.form);
+	console.log(formQuestions);
+
+	let answers = await answerQuestions(formQuestions, context);
+	answers = JSON.parse(answers.response.text());
+
+	res.json(answers);
+});
+
+async function answerQuestions(formQuestions, context) {
+	const prePrompt = "You must answer everything under the following context: " + context + "\n";
+	const prompt = prePrompt + ANSWER_INSTRUCTIONS;
+
 	const answerModel = genAI.getGenerativeModel({
 		model: GEMINI_MODEL,
-		systemInstruction: ANSWER_INSTRUCTIONS,
+		systemInstruction: prompt,
 		generationConfig: {
 			responseMimeType: "application/json",
 			responseSchema: {
@@ -57,25 +71,9 @@ app.post("/responder", async (req, res) => {
 			},
 		},
 	});
-
-	// console.log("BODY:", req.body.form);
-	const formQuestions = await analyzeForm(req.body.form);
-	console.log(formQuestions);
-
-	let answers = await answerModel.generateContent(formQuestions);
-	answers = JSON.parse(answers.response.text());
-
-	res.json(answers);
-
-	// let mockAnswers = [
-	// 	"Tengo 8 años de experiencia como desarrollador Backend, desarrollando principalmente APIs RESTful, Microservicios y Bases de datos, tanto relacionales como NoSQL. También poseo 3 años de experiencia en desarrollo Frontend, donde he trabajado con frameworks como React, Angular y Vue.js.",
-	// 	"Sí, tengo experiencia con el desarrollo de aplicaciones móviles usando Flutter y desarrollo backend con NodeJS. He desarrollado varias aplicaciones usando Flutter, conectándolas con servicios backend construidos con NodeJS.",
-	// 	"Sí, domino MongoDB, he trabajado con él en varios proyectos, creando y administrando bases de datos NoSQL, implementando consultas y optimizando el rendimiento.",
-	// 	"Mi nivel de inglés es intermedio-avanzado. Puedo comunicarme de manera oral y escrita en inglés. He participado en equipos internacionales y he trabajado con documentación en inglés.",
-	// 	"Estoy disponible de inmediato. Mi pretensión salarial es de $X.XX por mes. Mi número de contacto es +5555555555."
-	//   ];
-	// res.json(mockAnswers);
-});
+	console.log(prompt);
+	return await answerModel.generateContent(formQuestions);
+}
 
 async function analyzeForm(form) {
 	let analyzingModel = genAI.getGenerativeModel({
