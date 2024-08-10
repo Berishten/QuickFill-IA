@@ -11,31 +11,37 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 		sendResponse(true);
 	}
 
-	if (message.action === "responder_formulario" && message.data) {
-		inputs.forEach((input, i) => {
-			if (input.tagName === "TEXTAREA") {
-				input.value = message.data[i];
-			}
-			switch (input.type) {
-				case "number":
-					input.value = message.data[i];
-					break;
-				case "text":
-					input.value = message.data[i];
-					break;
-				case "radio":
-				case "checkbox":
-					input.checked = message.data[i];
-					break;
-				case "select-one":
-				case "select-multiple":
-					if (input.options.length > 0) {
-						input.value = message.data[i];
-					}
-					break;
-				default:
-					console.log("Tipo de input no reconocido:", input.type);
-					break;
+	if (
+		message.action === "responder_formulario" &&
+		message.data &&
+		message.data.length > 0
+	) {
+		message.data.forEach((answer, i) => {
+			if (inputs[i].tagName === "TEXTAREA") {
+				inputs[i].value = message.data[i];
+				return;
+			} else {
+				switch (inputs[i].type) {
+					case "number":
+						inputs[i].value = Number(message.data[i]);
+						break;
+					case "text":
+						inputs[i].value = message.data[i];
+						break;
+					case "radio":
+					case "checkbox":
+						inputs[i].checked = message.data[i];
+						break;
+					case "select-one":
+					case "select-multiple":
+						if (inputs[i].options.length > 0) {
+							inputs[i].value = message.data[i];
+						}
+						break;
+					default:
+						console.log("Tipo de input no reconocido:", answer.type);
+						break;
+				}
 			}
 		});
 		triggerChanges();
@@ -89,28 +95,28 @@ function selectForm() {
 function touchInputs() {
 	inputs.forEach((input) => {
 		// Establece el valor del input como un espacio en blanco
-		input.value = " ";
+		// input.value = " ";
 
 		// Dispara el evento de input para simular que el usuario ha escrito
 		const inputEvent = new Event("input", { bubbles: true });
 		input.dispatchEvent(inputEvent);
-		
+
 		// Simula la pérdida de foco disparando el evento blur
 		const blurEvent = new Event("blur", { bubbles: true });
 		input.dispatchEvent(blurEvent);
 	});
 
-	triggerChanges()
+	triggerChanges();
 }
 
 function triggerChanges() {
 	inputs.forEach((input) => {
 		// Dispara los eventos para actualizar el estado del formulario
-        const inputEvent = new Event('input', { bubbles: true });
-        input.dispatchEvent(inputEvent);
+		const inputEvent = new Event("input", { bubbles: true });
+		input.dispatchEvent(inputEvent);
 
-        const changeEvent = new Event('change', { bubbles: true });
-        input.dispatchEvent(changeEvent);
+		const changeEvent = new Event("change", { bubbles: true });
+		input.dispatchEvent(changeEvent);
 	});
 }
 

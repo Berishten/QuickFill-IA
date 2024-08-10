@@ -34,7 +34,6 @@ You will be provided with a JSON file containing objects with questions in the '
 Your task is to respond to each question using the format specified in the 'tipo_input' property.
 - If the 'tipo_input' is 'selector', choose one of the values from the 'values' property in the same object.
 - Ensure that you respond to all questions.
-- You must provide a response for each question.
 - You must provide responses in the same order as the questions.
 - You must provide a response limited to the 'max_length' property if it exists.
 - Don't be redundant in your responses relative to the question.
