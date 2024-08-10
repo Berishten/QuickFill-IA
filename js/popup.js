@@ -2,7 +2,7 @@ let isFileUploaded = false;
 let ctxInput = null;
 
 document.addEventListener("DOMContentLoaded", function () {
-	showFileName();
+	setUpFileUploadInput();
 	setupContext();
 
 	document
@@ -30,7 +30,7 @@ function setupContext() {
 	});
 }
 
-function showFileName() {
+function setUpFileUploadInput() {
 	const fileInput = document.getElementById("fileInput");
 	const fileName = document.getElementById("fileName");
 
@@ -39,7 +39,7 @@ function showFileName() {
 		if (file) {
 			fileName.textContent = file.name;
 		} else {
-			fileName.textContent = "Elige tu archivo";
+			fileName.textContent = "Choose a file";
 		}
 	});
 }
