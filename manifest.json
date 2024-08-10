@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "QuickMe",
+  "name": "Quick fill IA",
   "version": "1.0",
-  "description": "QuickMe is a simple extension that allows you to quickly answer form inputs based on a file.",
+  "description": "Fill out web forms in seconds using personalized contexts",
   "permissions": [
     "activeTab",
     "tabs",
@@ -12,7 +12,7 @@
     "default_popup": "popup.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "./js/background.js"
   },
   "content_scripts": [
     {
@@ -20,7 +20,7 @@
         "<all_urls>"
       ],
       "js": [
-        "content.js"
+        "./js/content.js"
       ]
     }
   ]

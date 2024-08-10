@@ -1,4 +1,4 @@
-# QuickFillAI
+# QuickFill-AI
 Una herramienta que utiliza Gemini para rellenar formularios con datos a partir de un contexto (archivo, texto, etc).
 
 [Link de competición](https://ai.google.dev/competition)
