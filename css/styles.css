@@ -1,0 +1,45 @@
+body {
+	width: 400px;
+	padding: 10px;
+	padding-bottom: 0;
+	border-radius: 10px;
+}
+p {
+	font-size: medium;
+}
+address {
+	font-size: small;
+}
+.custom-file-upload {
+	border: 1px solid #dee2e6;
+	border-radius: 0.25rem;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+	font-size: 0.875rem;
+	padding: 0.25rem 0.5rem;
+	cursor: pointer;
+	background-color: #f8f9fa;
+
+	display: flex;
+	position: relative;
+	flex: 1 1 auto;
+	width: 1%;
+	min-width: 0;
+}
+.btnFile {
+	width: 100px;
+	text-align: center;
+}
+.custom-file-input {
+	display: none;
+}
+.file-name {
+	width: 70%;
+	font-size: 0.875rem;
+	margin-left: 10px;
+	color: #555;
+	display: block;
+	padding: 0.25rem 0.5rem;
+	border: 1px solid #dee2e6;
+	border-radius: 0.25rem;
+}

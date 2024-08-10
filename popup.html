@@ -3,40 +3,80 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Extensión de Chrome</title>
-		<style>
-			li {
-				margin-bottom: 10px;
-			}
-		</style>
-		<link rel="stylesheet" href="./bootstrap/bootstrap.min.css" />
-		<script src="./bootstrap/bootstrap.bundle.min.js"></script>
+		<link rel="stylesheet" href="./css/styles.css" />
+		<link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css" />
+		<script src="./css/bootstrap/bootstrap.bundle.min.js"></script>
 	</head>
 	<body>
-		<ol style="padding-left: 10px">
-			<li>
-				<label>Debe ingresar primero</label>
-				<br />
-				<button id="login" disabled>Login</button>
-			</li>
-			<li>
-				<label for="ctx">Contexto:</label>
-				<br />
-				<input type="text" id="ctx" />
-			</li>
-			<li>
-				<label for="addFile">Adjuntar archivo:</label>
-				<input
-					type="file"
-					id="addFile"
-					accept=".pdf, .jpg, .jpeg, .png, .txt, .doc, .xlsx, "
-					disabled />
-			</li>
-			<li>
-				<label>Seleccione el formulario para rellenar</label>
-				<br />
-				<button id="responderFormulario">Seleccionar formulario</button>
-			</li>
-		</ol>
+		<div class="container-fluid" style="margin-top: 12px">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-8">
+							<h4>QuickFillIA</h4>
+							<blockquote class="blockquote">
+								<p class="mb-0">
+									Fill out web forms in seconds using personalized contexts.
+								</p>
+							</blockquote>
+						</div>
+						<div class="col-4">
+							<button type="button" class="btn btn-block btn-sm btn-info w-100">
+								Login
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12">
+					<div class="input-group input-group-sm mb-3">
+						<span class="input-group-text">Contexto</span>
+						<input
+							type="text"
+							class="form-control"
+							placeholder="Eres un experto programador..."
+							aria-label="context"
+							id="ctx"
+							name="ctx"
+							aria-describedby="ctx" />
+					</div>
+					<div class="input-group input-group-sm mb-3">
+						<label class="custom-file-upload">
+							<input
+								type="file"
+								class="custom-file-input"
+								id="fileInput"
+								accept=".pdf, .jpg, .jpeg, .png, .txt, .docx, .xlsx" />
+							<span class="btnFile">Subir archivo</span>
+						</label>
+						<span id="fileName" class="file-name"
+							>Sin archivo seleccionado</span
+						>
+					</div>
+				</div>
+			</div>
+			<div class="row border-top pt-3">
+				<div class="col">
+					<hr class="dropdown-divider" />
+					<button
+						type="button"
+						id="responderFormulario"
+						class="btn btn-block w-100 text-center btn-success mb-3">
+						Selecciona un formulario para rellenar
+					</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-12 text-center text-muted">
+					<address>
+						<strong>Beridevs</strong> -
+						<a href="mailto:beridevs@gmail.com">beridevs@gmail.com</a>
+					</address>
+				</div>
+			</div>
+		</div>
 		<script src="popup.js"></script>
 	</body>
 </html>
