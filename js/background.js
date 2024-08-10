@@ -1,4 +1,3 @@
-let isFormSelected = false;
 let context = "";
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "makeHttpRequest") {
@@ -39,19 +38,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			});
 	}
 
-	// TODO: seccion para menejar datos (no volatil)
-	if (message.action === "formulario_seleccionado") {
-		// document
-		// 	.getElementById("seleccionarFormulario")
-		// 	.setAttribute("disabled", "disabled");
-		// isFormSelected = true;
-		// console.log("HOLIS");
-		isFormSelected = true;
-	}
-
 	if (message.action === "save_data") {
 		context = message.ctx;
-		// sendResponse(true);
 	}
 
 	if (message.action === "get_data") {

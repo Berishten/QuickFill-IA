@@ -1,13 +1,17 @@
-# QuickFillAI
-Una herramienta que utiliza Gemini para rellenar formularios con datos a partir de un contexto (archivo, texto, etc).
+# QuickFill-AI
+#### **Fill out web forms in seconds using personalized contexts**
+
+A browser plugin simplifies and accelerates the process of filling out any type of online form. Select a form, provide a context such as a report, a CV, or a role, and let our plugin automatically complete the fields. Ideal for reducing time spent on repetitive tasks, whether for job applications, bureaucratic procedures, or everyday forms. Coming soon with more features, like adding an image as context to extend the possibilities.
+
+[Link de competición](https://ai.google.dev/competition)
 
 [Link de competición](https://ai.google.dev/competition)
 
 ---
 
 ### Características principales
-- [ ] Detección de pares (label - input)
-- [ ] Rellenar inputs con LLM
+- [x] Detección de pares (label - input)
+- [x] Rellenar inputs con LLM
 
 
 ### TODO:
@@ -35,16 +39,11 @@ Una herramienta que utiliza Gemini para rellenar formularios con datos a partir 
 ### Mejoras
 - [ ] Permitir contexto en formato imagen
 
-### Mejoras
-- [ ] Permitir contexto en formato imagen
-
-
 ### Documentación
 [Link al formulario de competencia](https://docs.google.com/forms/d/e/1FAIpQLSczzeNmPUo6yiS_TfULziyEO8gzc1WFYX3yal62KzrQgeoa1g/viewform?embedded=true&pli=1)
-- [ ] App name
-- [ ] App tagline or elevator pitch
-- [ ] Definir utilidad
+- [x] App name
+- [x] App tagline or elevator pitch
 - [ ] YouTube URL
 - [ ] Website or web app URL (publicar en chrome extensions)
 - [ ] Testing instructions
-- [ ] Team name
+- [x] Team name (ByeBytes)
