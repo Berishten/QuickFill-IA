@@ -13,6 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
 					action: "seleccionar_formulario",
 					context: ctxInput.value,
 				});
+				chrome.scripting.executeScript({
+					target: { tabId: tabs[0].id },
+					function: detectForm
+				})
 			});
 		});
 });
@@ -42,4 +46,16 @@ function setUpFileUploadInput() {
 			fileName.textContent = "Choose a file";
 		}
 	});
+}
+
+function detectForm() {
+	const forms = document.querySelectorAll("form")
+	if (forms.length > 0) {
+		forms.forEach((form, index) => {
+			form.style.outline = "2px solid red"
+			console.log(`Form ${index + 1}:`, form);
+		});
+	} else {
+		console.log("No forms found on this page.");
+	}
 }
