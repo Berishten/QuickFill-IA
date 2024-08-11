@@ -25,14 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
 function setupContext() {
 	ctxInput = document.getElementById("ctx");
 	ctxInput.addEventListener("change", function () {
-		console.log("bucle");
 		const ctx = ctxInput.value;
-		chrome.runtime.sendMessage({ action: "save_data", ctx: ctx });
+		localStorage.setItem("context", ctx);
 	});
 
-	chrome.runtime.sendMessage({ action: "get_data" }, function (response) {
-		ctxInput.value = response;
-	});
+	ctxInput.value = localStorage.getItem("context") || "";
 }
 
 function setUpFileUploadInput() {
@@ -41,10 +38,28 @@ function setUpFileUploadInput() {
 
 	fileInput.addEventListener("change", function () {
 		const file = fileInput.files[0];
-		if (file) {
-			fileName.textContent = file.name;
-		} else {
-			fileName.textContent = "Choose a file";
-		}
+		localStorage.setItem("filename", file.name);
+		fileName.textContent = file.name;
+
+		const reader = new FileReader();
+		reader.onload = function () {
+			const base64Data = reader.result.split(",")[1];
+			chrome.runtime.sendMessage(
+				{
+					action: "saveFile",
+					file: base64Data,
+					fileName: file.name,
+					fileType: file.type,
+				},
+				(response) => {
+					console.log("File uploaded", response);
+				}
+			);
+		};
+		reader.readAsDataURL(file);
 	});
+
+	if (localStorage.getItem("filename")) {
+		fileName.textContent = localStorage.getItem("filename") || "";
+	}
 }

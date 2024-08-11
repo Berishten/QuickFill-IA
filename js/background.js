@@ -38,12 +38,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 			});
 	}
 
-	if (message.action === "save_data") {
-		context = message.ctx;
-	}
+	if (message.action === "saveFile") {
+		const { file, fileName, fileType } = message;
+		const byteCharacters = atob(file);
+		const byteNumbers = new Array(byteCharacters.length);
+		for (let i = 0; i < byteCharacters.length; i++) {
+			byteNumbers[i] = byteCharacters.charCodeAt(i);
+		}
+		const byteArray = new Uint8Array(byteNumbers);
+		const blob = new Blob([byteArray], { type: fileType });
 
-	if (message.action === "get_data") {
-		sendResponse(context);
+		const formData = new FormData();
+		formData.append("file", blob, fileName);
+
+		fetch("http://localhost:3000/upload", {
+			method: "POST",
+			body: formData,
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				sendResponse({ success: true, data });
+			})
+			.catch((error) => {
+				console.error("Upload error:", error);
+				sendResponse({ success: false, error: error.message });
+			});
+
+		return true; // Esto indica que la respuesta será enviada de forma asíncrona
 	}
 });
 
