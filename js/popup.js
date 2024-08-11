@@ -20,14 +20,11 @@ document.addEventListener("DOMContentLoaded", function () {
 function setupContext() {
 	ctxInput = document.getElementById("ctx");
 	ctxInput.addEventListener("change", function () {
-		console.log("bucle");
 		const ctx = ctxInput.value;
-		chrome.runtime.sendMessage({ action: "save_data", ctx: ctx });
+		localStorage.setItem("context", ctx);
 	});
 
-	chrome.runtime.sendMessage({ action: "get_data" }, function (response) {
-		ctxInput.value = response;
-	});
+	ctxInput.value = localStorage.getItem("context") || "";
 }
 
 function setUpFileUploadInput() {
@@ -37,6 +34,7 @@ function setUpFileUploadInput() {
 	fileInput.addEventListener("change", function () {
 		const file = fileInput.files[0];
 		if (file) {
+			chrome.runtime.sendMessage({ action: "save_file", file: file });
 			fileName.textContent = file.name;
 		} else {
 			fileName.textContent = "Choose a file";

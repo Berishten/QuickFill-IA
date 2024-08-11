@@ -37,12 +37,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 				console.error("Error:", error);
 			});
 	}
-
-	if (message.action === "save_data") {
-		context = message.ctx;
-	}
-
-	if (message.action === "get_data") {
-		sendResponse(context);
-	}
 });

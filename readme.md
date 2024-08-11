@@ -17,7 +17,7 @@ A browser plugin simplifies and accelerates the process of filling out any type 
 ### TODO:
 - [ ] Login
 - [ ] Input de contexto
-- [ ] Subir archivo
+- [ ] Subir archivo [Detalles tecnicos](https://ai.google.dev/gemini-api/docs/document-processing?authuser=1&lang=node)
 - [ ] Seleccionar idioma
 - [ ] Escribir condiciones de uso
 - [ ] Cubrir casos de accesibilidad
@@ -37,7 +37,8 @@ A browser plugin simplifies and accelerates the process of filling out any type 
     - [ ] Model API token
 
 ### Mejoras
-- [ ] Permitir contexto en formato imagen
+- [ ] Permitir contexto en formato imagen [Detalles tecnicos](https://ai.google.dev/gemini-api/docs/vision?authuser=1&lang=node)
+- [ ] Permitir contexto en formato audio [Detalles tecnicos](https://ai.google.dev/gemini-api/docs/audio?authuser=1&lang=node)
 
 ### Documentación
 [Link al formulario de competencia](https://docs.google.com/forms/d/e/1FAIpQLSczzeNmPUo6yiS_TfULziyEO8gzc1WFYX3yal62KzrQgeoa1g/viewform?embedded=true&pli=1)
