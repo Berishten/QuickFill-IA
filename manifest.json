@@ -20,7 +20,8 @@
         "<all_urls>"
       ],
       "js": [
-        "./js/content.js"
+        "./js/content.js",
+        "./js/domManipulation.js"
       ]
     }
   ]
