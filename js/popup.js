@@ -32,12 +32,11 @@ function setUpFileUploadInput() {
 	const fileName = document.getElementById("fileName");
 
 	fileInput.addEventListener("change", function () {
-		const file = fileInput.files[0];
-		if (file) {
-			chrome.runtime.sendMessage({ action: "save_file", file: file });
-			fileName.textContent = file.name;
-		} else {
-			fileName.textContent = "Choose a file";
-		}
+		file = fileInput.files[0];
+		localStorage.setItem("filename", file.name);
+		fileName.textContent = file.name;
 	});
+	if (localStorage.getItem("filename")) {
+		fileName.textContent = localStorage.getItem("filename") || "";
+	}
 }
