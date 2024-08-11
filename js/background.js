@@ -37,4 +37,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 				console.error("Error:", error);
 			});
 	}
+
+	if (message.action === "saveFile") {
+		const formData = new FormData();
+		formData.append("file", message.data);
+		fetch("http://localhost:3000/savefile", {
+			method: "POST",
+			body: formData,
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				sendResponse(true);
+			})
+			.catch((error) => {
+				console.error("Error:", error);
+				sendResponse(false);
+			});
+	}
 });
