@@ -35,13 +35,25 @@ function setUpFileUploadInput() {
 		const file = fileInput.files[0];
 		localStorage.setItem("filename", file.name);
 		fileName.textContent = file.name;
-		chrome.runtime.sendMessage(
-			{ action: "saveFile", data: file },
-			(response) => {
-				console.log("File uploaded", response);
-			}
-		);
+
+		const reader = new FileReader();
+		reader.onload = function () {
+			const base64Data = reader.result.split(",")[1];
+			chrome.runtime.sendMessage(
+				{
+					action: "saveFile",
+					file: base64Data,
+					fileName: file.name,
+					fileType: file.type,
+				},
+				(response) => {
+					console.log("File uploaded", response);
+				}
+			);
+		};
+		reader.readAsDataURL(file);
 	});
+
 	if (localStorage.getItem("filename")) {
 		fileName.textContent = localStorage.getItem("filename") || "";
 	}
