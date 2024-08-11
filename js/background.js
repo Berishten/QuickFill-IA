@@ -50,18 +50,5 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.action.onClicked.addListener((tab) => {
 	chrome.scripting.executeScript({
 		target: { tabId: tab.id },
-		// function: detectForm
 	})
 })
-
-function detectForm() {
-	const forms = document.querySelectorAll("form")
-	if (forms.length > 0) {
-		forms.forEach((form, index) => {
-			form.style.border = "2px solid red"
-			console.log(`Form ${index + 1}:`, form);
-		});
-	} else {
-		console.log("No forms found on this page.");
-	}
-}
