@@ -86,7 +86,7 @@ function selectForm() {
 	resetForms();
 	originalFormId = this.id;
 	this.id = SELECTED_FORM_ID;
-	this.style.border = "1px solid green";
+	// this.style.border = "1px solid green";
 	selectedForm = this;
 
 	inputs = getInputs();
@@ -136,9 +136,22 @@ function responderFormulario(form) {
 }
 
 function resetForms() {
+	const overlay = document.getElementById("forms-overlay");
+	overlay.remove();
+
 	forms.forEach((form) => {
 		form.removeEventListener("mouseover", handleMouseOver);
 		form.removeEventListener("mouseout", handleMouseOut);
 		form.removeEventListener("click", selectForm);
+
+		form.style.position = "";
+		form.style.zIndex = "";
+		form.style.border = "";
+		form.style.outline = "";
+		form.style.backgroundColor = "";
+		form.style.borderRadius = "";
+		form.style.color = "";
+		form.style.opacity = "";
+		form.style.cursor = "";
 	});
 }
