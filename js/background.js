@@ -1,6 +1,5 @@
-let context = "";
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-	if (message.action === "makeHttpRequest") {
+	if (message.action === "answerQuestions") {
 		fetch("http://localhost:3000/responder", {
 			method: "POST",
 			headers: {
