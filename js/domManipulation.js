@@ -40,6 +40,7 @@ function detectForm() {
                 form.style.zIndex = "10000";
                 form.style.outline = "20px solid white";
                 form.style.borderRadius = "10px";
+                form.style.opacity = "0.5";
                 form.style.color = "black"; // Opcional
                 form.style.backgroundColor = "white"; // Opcional
 
@@ -67,6 +68,7 @@ function detectForm() {
             form.style.backgroundColor = "";
             form.style.borderRadius = "";
             form.style.color = "";
+            form.style.opacity = "";
         });
     }
     chrome.runtime.sendMessage({type: "totalForms", value: totalForms});

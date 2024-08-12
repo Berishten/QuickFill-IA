@@ -59,11 +59,15 @@ function setFormHovers() {
 }
 
 function handleMouseOver() {
-	this.style.border = "10px solid red";
+	// this.style.border = "1px solid red";
+	this.style.opacity = "1";
+	this.style.cursor = "pointer";
 }
 
 function handleMouseOut() {
-	this.style.border = "none";
+	// this.style.border = "none";
+	this.style.opacity = "0.5";
+	this.style.cursor = "";
 }
 
 function getInputs() {
