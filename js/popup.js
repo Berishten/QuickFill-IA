@@ -2,12 +2,11 @@ let isFileUploaded = false;
 let ctxInput = null;
 
 let totalForms = 0;
-let detectMode = false;
+// let detectMode = false;
 
 document.addEventListener("DOMContentLoaded", function () {
 	setUpFileUploadInput();
 	setupContext();
-	alert(detectMode)
 
 	document
 	.getElementById("responderFormulario")

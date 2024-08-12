@@ -59,7 +59,7 @@ function setFormHovers() {
 }
 
 function handleMouseOver() {
-	this.style.border = "1px solid red";
+	this.style.border = "10px solid red";
 }
 
 function handleMouseOut() {
