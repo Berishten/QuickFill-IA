@@ -126,6 +126,7 @@ function responderFormulario(form) {
 	const data = {
 		context: context,
 		form: form,
+		fileUri: localStorage.getItem("file").uri,
 	};
 	chrome.runtime.sendMessage({ action: "makeHttpRequest", data });
 }
