@@ -4,12 +4,14 @@ let originalFormId = "";
 let selectedForm = null;
 let context = "";
 const SELECTED_FORM_ID = "selectedForm";
+let fileUri = null;
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 	if (message.action === "seleccionar_formulario") {
 		context = message.context;
 		forms = document.querySelectorAll("form");
 		setFormHovers(forms);
+		fileUri = message.fileUri;
 		sendResponse(true);
 	}
 
@@ -93,8 +95,6 @@ function selectForm() {
 	touchInputs();
 
 	responderFormulario(this.outerHTML);
-	// TODO: Enviar mensaje al background en caso de almacenar valores
-	// chrome.runtime.sendMessage({ action: "formulario_seleccionado" });
 }
 
 function touchInputs() {
@@ -127,11 +127,13 @@ function triggerChanges() {
 }
 
 function responderFormulario(form) {
-	const uri = localStorage.getItem("fileUri");
+	// console.log("RESPONDER FORMULARIO");
+	// const uri = localStorage.getItem("fileUri") || null;
+	// console.log("URI", uri);
 	const data = {
 		context: context,
 		form: form,
-		fileUri: uri,
+		fileUri: fileUri,
 	};
 	chrome.runtime.sendMessage({ action: "answerQuestions", data });
 }
