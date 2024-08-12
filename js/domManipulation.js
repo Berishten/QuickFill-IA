@@ -1,4 +1,5 @@
-let overlayActive = false;
+let onDetection = false;
+let totalForms = 0;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "manipular_dom") {
@@ -6,16 +7,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 });
 
+
 //TODO: detect only valid form
 /**
  * toggles an overlay and highlights forms on the webpage.
- */
+*/
 function detectForm() {
-    if (!overlayActive) {
+    if (!onDetection) {
         const forms = document.querySelectorAll("form");
 
         if (forms.length > 0) {
-            overlayActive = true;
+            onDetection = true;
+            // chrome.storage.local.set({detectionModeOn: true})
+            totalForms = forms.length;
 
             const overlay = document.createElement("div");
             overlay.setAttribute("id", "forms-overlay");
@@ -35,28 +39,32 @@ function detectForm() {
                 form.style.position = "relative";
                 form.style.zIndex = "10000";
                 form.style.outline = "20px solid white";
-                form.style.backgroundColor = "white"; // Opcional
+                form.style.backgroundColor = "initial"; // Opcional
 
                 console.log(`Form ${index + 1}:`, form);
             });
         } else {
-        alert("No forms found on this page.");
+            onDetection = false;
+            alert("No forms found on this page.");
         }
 
     } else {
-        overlayActive = false;
+        onDetection = false;
+        // chrome.storage.local.set({detectionModeExit: true})
 
         const lastOverlay = document.getElementById("forms-overlay");
         if (lastOverlay) {
-        lastOverlay.remove();
+            lastOverlay.remove();
         }
 
         const forms = document.querySelectorAll("form");
         forms.forEach((form) => {
-        form.style.position = "";
-        form.style.zIndex = "";
-        form.style.outline = "";
-        form.style.backgroundColor = "";
+            form.style.position = "";
+            form.style.zIndex = "";
+            form.style.outline = "";
+            form.style.backgroundColor = "";
         });
     }
+    chrome.runtime.sendMessage({type: "totalForms", value: totalForms});
+    // chrome.runtime.sendMessage({type: "isDetecting", value: onDetection});
 }

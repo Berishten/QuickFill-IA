@@ -1,4 +1,13 @@
 let context = "";
+let totalForms = 0;
+let isDetecting = false;
+
+chrome.action.onClicked.addListener((tab) => {
+	chrome.scripting.executeScript({
+		target: { tabId: tab.id },
+	})
+})
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 	if (message.action === "makeHttpRequest") {
 		fetch("http://localhost:3000/responder", {
@@ -66,10 +75,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 		return true; // Esto indica que la respuesta será enviada de forma asíncrona
 	}
-});
 
-chrome.action.onClicked.addListener((tab) => {
-	chrome.scripting.executeScript({
-		target: { tabId: tab.id },
-	})
-})
+	// total forms
+	if (message.type === 'totalForms') {
+        totalForms = message.value;
+    }
+	if (message.type === "getTotalForms") {
+		sendResponse({number: totalForms});
+	}
+
+	// // isDetecting boolean
+	// if (message.type === 'isDetecting') {
+    //     isDetecting = message.value;
+    // }
+	// if (message.type === "getIsDetecting") {
+	// 	sendResponse({onDetect: isDetecting});
+	// }
+});
