@@ -1,4 +1,3 @@
-let context = "";
 let totalForms = 0;
 let isDetecting = false;
 
@@ -9,7 +8,7 @@ chrome.action.onClicked.addListener((tab) => {
 })
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-	if (message.action === "makeHttpRequest") {
+	if (message.action === "answerQuestions") {
 		fetch("http://localhost:3000/responder", {
 			method: "POST",
 			headers: {

@@ -49,10 +49,15 @@ function setUpFileUploadInput() {
 	const fileInput = document.getElementById("fileInput");
 	const fileName = document.getElementById("fileName");
 
+	let remoteFileName = localStorage.getItem("file");
+	if (remoteFileName) {
+		fileName.textContent = remoteFileName || null;
+	}
+
 	fileInput.addEventListener("change", function () {
 		const file = fileInput.files[0];
-		// localStorage.setItem("filename", file.name);
-		fileName.textContent = file.name;
+		fileName.textContent = "Cargando...";
+		file.disabled = true;
 
 		const reader = new FileReader();
 		reader.onload = function () {
@@ -65,11 +70,11 @@ function setUpFileUploadInput() {
 					fileType: file.type,
 				},
 				(response) => {
-					let file = response.data.file
-					localStorage.setItem("file", {
-						uri: file.uri,
-						name: file.name,
-					});
+					let fileData = response.data.file;
+					localStorage.setItem("file", response.data.file.name);
+					localStorage.setItem("fileUri", response.data.file.uri);
+					fileName.textContent = fileData.name;
+					file.disabled = false;
 					console.log("File uploaded");
 				}
 			);
@@ -77,9 +82,7 @@ function setUpFileUploadInput() {
 		reader.readAsDataURL(file);
 	});
 
-	if (localStorage.getItem("filename")) {
-		fileName.textContent = localStorage.getItem("filename") || "";
-	}
+	
 }
 
 /**

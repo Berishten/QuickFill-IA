@@ -127,12 +127,13 @@ function triggerChanges() {
 }
 
 function responderFormulario(form) {
+	const uri = localStorage.getItem("fileUri");
 	const data = {
 		context: context,
 		form: form,
-		fileUri: localStorage.getItem("file").uri,
+		fileUri: uri,
 	};
-	chrome.runtime.sendMessage({ action: "makeHttpRequest", data });
+	chrome.runtime.sendMessage({ action: "answerQuestions", data });
 }
 
 function resetForms() {
