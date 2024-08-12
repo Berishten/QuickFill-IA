@@ -51,7 +51,7 @@ function setUpFileUploadInput() {
 
 	fileInput.addEventListener("change", function () {
 		const file = fileInput.files[0];
-		localStorage.setItem("filename", file.name);
+		// localStorage.setItem("filename", file.name);
 		fileName.textContent = file.name;
 
 		const reader = new FileReader();
@@ -65,7 +65,12 @@ function setUpFileUploadInput() {
 					fileType: file.type,
 				},
 				(response) => {
-					console.log("File uploaded", response);
+					let file = response.data.file
+					localStorage.setItem("file", {
+						uri: file.uri,
+						name: file.name,
+					});
+					console.log("File uploaded");
 				}
 			);
 		};

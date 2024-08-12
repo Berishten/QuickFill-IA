@@ -5,8 +5,6 @@ A browser plugin simplifies and accelerates the process of filling out any type 
 
 [Link de competición](https://ai.google.dev/competition)
 
-[Link de competición](https://ai.google.dev/competition)
-
 ---
 
 ### Características principales
