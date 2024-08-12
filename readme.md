@@ -52,3 +52,7 @@ A browser plugin simplifies and accelerates the process of filling out any type 
 - [ ] Website or web app URL (publicar en chrome extensions)
 - [ ] Testing instructions
 - [x] Team name (ByeBytes)
+
+## KNOWN ISSUES
+- Quedan algunos estilos del hover al presionar el boton Cancelar
+- "Modo detectar" (botón Cancel) no se mantiene al reabrir el popup
