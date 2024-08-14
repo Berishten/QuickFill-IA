@@ -38,7 +38,7 @@ function detectForm() {
             forms.forEach((form, index) => {
                 form.style.position = "relative";
                 form.style.zIndex = "10000";
-                form.style.outline = "20px solid white";
+                form.style.outline = "10px ridge #66ff66";
                 form.style.borderRadius = "10px";
                 form.style.opacity = "0.5";
                 form.style.color = "black"; // Opcional
